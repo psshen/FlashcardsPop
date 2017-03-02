@@ -6,10 +6,12 @@ import android.widget.TextView;
 
 import com.pushlean.flashcardspop.R;
 
+import java.io.Serializable;
+
 /**
  * Copyright 2017 Paul Shen. Licensed under the Apache License, Version 2.0.
  */
-public class Tag {
+public class Tag implements Serializable {
 
     String name;
     int color;

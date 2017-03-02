@@ -1,11 +1,12 @@
 package com.pushlean.flashcardspop.data;
 
+import java.io.Serializable;
 import java.util.Set;
 
 /**
  * Copyright 2017 Paul Shen. Licensed under the Apache License, Version 2.0.
  */
-public class Deck {
+public class Deck implements Serializable {
 
     String title;
     Set<Card> cards;

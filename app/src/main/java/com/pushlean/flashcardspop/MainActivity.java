@@ -1,5 +1,6 @@
 package com.pushlean.flashcardspop;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -11,7 +12,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-public class MainActivity extends AppCompatActivity {
+import com.pushlean.flashcardspop.data.Deck;
+
+public class MainActivity extends AppCompatActivity implements DeckAdapter.DeckAdapterOnClickHandler {
 
     private RecyclerView recyclerView;
     private DeckAdapter deckAdapter;
@@ -38,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
 
-        deckAdapter = new DeckAdapter(this);
+        deckAdapter = new DeckAdapter(this, this);
         recyclerView.setAdapter(deckAdapter);
     }
 
@@ -63,4 +66,12 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onClick(Deck deck) {
+        Intent editDeckIntent = new Intent(MainActivity.this, EditDeckView.class);
+        editDeckIntent.putExtra("deck", deck);
+        startActivity(editDeckIntent);
+    }
+
 }

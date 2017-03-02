@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.common.collect.Sets;
@@ -19,7 +20,7 @@ public class DeckAdapter extends RecyclerView.Adapter<DeckAdapter.DeckAdapterVie
 
     private Deck[] decks = new Deck[]{
             new Deck("Tutorial",
-                    Sets.newHashSet(new Card(), new Card()),
+                    Sets.newHashSet(new Card("Edit deck", "Click deck"), new Card("Add deck", "Click add button")),
                     Sets.newHashSet(new Tag("Tutorials", Color.BLUE), new Tag("Learning", Color.RED)),
                     false),
             new Deck("Spanish",
@@ -29,13 +30,19 @@ public class DeckAdapter extends RecyclerView.Adapter<DeckAdapter.DeckAdapterVie
     };
     private final Context context;
 
-    public DeckAdapter(Context context) {
+    private DeckAdapterOnClickHandler onClickHandler;
+    public interface DeckAdapterOnClickHandler {
+        void onClick(Deck deck);
+    }
+
+    public DeckAdapter(Context context, DeckAdapterOnClickHandler onClickHandler) {
         this.context = context;
+        this.onClickHandler = onClickHandler;
     }
 
     @Override
     public DeckAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
         DeckListItemBinding binding = DeckListItemBinding.inflate(layoutInflater, parent, false);
         return new DeckAdapterViewHolder(binding);
     }
@@ -51,13 +58,14 @@ public class DeckAdapter extends RecyclerView.Adapter<DeckAdapter.DeckAdapterVie
         return decks.length;
     }
 
-    class DeckAdapterViewHolder extends RecyclerView.ViewHolder {
+    class DeckAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private DeckListItemBinding binding;
 
         public DeckAdapterViewHolder(DeckListItemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
+            binding.getRoot().setOnClickListener(this);
         }
 
         public void bind(Deck deck) {
@@ -72,6 +80,13 @@ public class DeckAdapter extends RecyclerView.Adapter<DeckAdapter.DeckAdapterVie
                     tag.createTextView(layoutInflater, binding.tagContainer);
                 }
             }
+        }
+
+        @Override
+        public void onClick(View view) {
+            int adapterPosition = getAdapterPosition();
+            Deck deck = decks[adapterPosition];
+            onClickHandler.onClick(deck);
         }
 
     }
