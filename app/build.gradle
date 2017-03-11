@@ -35,4 +35,5 @@ dependencies {
     compile 'com.google.guava:guava:20.0'
     compile 'com.dmitrymalkovich.android:material-design-dimens:1.4'
     testCompile 'junit:junit:4.12'
+    compile 'com.github.psshen:library:1.5'
 }

@@ -13,6 +13,12 @@ import com.pushlean.flashcardspop.data.Deck;
 import com.pushlean.flashcardspop.data.Tag;
 import com.pushlean.flashcardspop.databinding.DeckListItemBinding;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import me.gujun.android.taggroup.TagGroup;
+
 /**
  * Copyright 2017 Paul Shen. Licensed under the Apache License, Version 2.0.
  */
@@ -74,11 +80,15 @@ public class DeckAdapter extends RecyclerView.Adapter<DeckAdapter.DeckAdapterVie
             binding.deckSize.setText(deckSize);
             binding.starToggle.setChecked(deck.isFavorite());
 
-            LayoutInflater layoutInflater = LayoutInflater.from(context);
-            if (deck.getTags() != null) {
-                for (Tag tag : deck.getTags()) {
-                    tag.createTextView(layoutInflater, binding.tagContainer);
+            Set<Tag> tags = deck.getTags();
+            if (tags != null) {
+                TagGroup tagContainer = binding.tagContainer;
+                TagGroup.TagAttributes[] tagNames = new TagGroup.TagAttributes[tags.size()];
+                int i = 0;
+                for (Tag tag : tags) {
+                    tagNames[i++] = new TagGroup.TagAttributes(tag.getName(), tag.getColor());
                 }
+                tagContainer.setTags(tagNames);
             }
         }
 

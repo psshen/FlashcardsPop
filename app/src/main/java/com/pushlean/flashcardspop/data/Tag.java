@@ -1,11 +1,5 @@
 package com.pushlean.flashcardspop.data;
 
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
-import android.widget.TextView;
-
-import com.pushlean.flashcardspop.R;
-
 import java.io.Serializable;
 
 /**
@@ -29,10 +23,4 @@ public class Tag implements Serializable {
         return color;
     }
 
-    public void createTextView(LayoutInflater layoutInflater, ViewGroup parent) {
-        TextView textView = (TextView) layoutInflater.inflate(R.layout.tag_text_view, parent, false);
-        textView.setText(getName());
-        textView.setBackgroundColor(getColor());
-        parent.addView(textView);
-    }
 }

@@ -11,9 +11,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.pushlean.flashcardspop.data.Deck;
+import com.pushlean.flashcardspop.data.Tag;
+
+import java.util.Set;
+
+import me.gujun.android.taggroup.TagGroup;
 
 public class EditDeckView extends AppCompatActivity {
 
+    private TagGroup editTagGroup;
     private RecyclerView recyclerView;
     private CardAdapter cardAdapter;
 
@@ -34,15 +40,23 @@ public class EditDeckView extends AppCompatActivity {
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        editTagGroup = (TagGroup) findViewById(R.id.edit_tag_group);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_cards);
-
-        LinearLayoutManager layoutManager =
-                new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(layoutManager);
 
         Intent intent = getIntent();
         Deck deck = (Deck) intent.getSerializableExtra("deck");
 
+        Set<Tag> tags = deck.getTags();
+        TagGroup.TagAttributes[] tagNames = new TagGroup.TagAttributes[tags.size()];
+        int i = 0;
+        for (Tag tag : tags) {
+            tagNames[i++] = new TagGroup.TagAttributes(tag.getName(), tag.getColor());
+        }
+        editTagGroup.setTags(tagNames);
+
+        LinearLayoutManager layoutManager =
+                new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(layoutManager);
         cardAdapter = new CardAdapter(this, deck);
         recyclerView.setAdapter(cardAdapter);
 
